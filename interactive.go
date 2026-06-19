@@ -193,7 +193,8 @@ func (t *terminal) pager(header, lines []string) {
 			b.WriteString(lines[i])
 			b.WriteString("\r\n")
 		}
-		b.WriteString("\r\n" + dim("↑/↓ scroll · Esc/q back"))
+		b.WriteString("\r\n")
+		b.WriteString(dim("↑/↓ scroll · Esc/q back"))
 		fmt.Print(b.String())
 
 		k, r := t.readKey()

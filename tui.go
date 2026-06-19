@@ -156,7 +156,8 @@ func (t *terminal) renderList(header, items []string, sel int, marks []bool, con
 		b.WriteString("\r\n")
 	}
 	if start > 0 {
-		b.WriteString(dim("   ↑ more…") + "\r\n")
+		b.WriteString(dim("   ↑ more…"))
+		b.WriteString("\r\n")
 	}
 	for i := start; i < end; i++ {
 		line := items[i]
@@ -168,16 +169,21 @@ func (t *terminal) renderList(header, items []string, sel int, marks []bool, con
 			line = box + line
 		}
 		if i == sel {
-			b.WriteString("\033[36m▸ \033[7m" + line + "\033[0m")
+			b.WriteString("\033[36m▸ \033[7m")
+			b.WriteString(line)
+			b.WriteString("\033[0m")
 		} else {
-			b.WriteString("  " + line)
+			b.WriteString("  ")
+			b.WriteString(line)
 		}
 		b.WriteString("\r\n")
 	}
 	if end < len(items) {
-		b.WriteString(dim("   ↓ more…") + "\r\n")
+		b.WriteString(dim("   ↓ more…"))
+		b.WriteString("\r\n")
 	}
-	b.WriteString("\r\n" + dim(controls))
+	b.WriteString("\r\n")
+	b.WriteString(dim(controls))
 	fmt.Print(b.String())
 }
 
@@ -245,8 +251,13 @@ func (t *terminal) field(header []string, label, initial string, digitsOnly bool
 			b.WriteString(h)
 			b.WriteString("\r\n")
 		}
-		b.WriteString("\r\n  " + label + ": " + string(buf) + "\033[7m \033[0m")
-		b.WriteString("\r\n\r\n" + dim("Enter confirm · Esc cancel · Backspace erase"))
+		b.WriteString("\r\n  ")
+		b.WriteString(label)
+		b.WriteString(": ")
+		b.WriteString(string(buf))
+		b.WriteString("\033[7m \033[0m")
+		b.WriteString("\r\n\r\n")
+		b.WriteString(dim("Enter confirm · Esc cancel · Backspace erase"))
 		fmt.Print(b.String())
 
 		c, err := t.in.ReadByte()
